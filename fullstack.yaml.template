@@ -1,0 +1,19 @@
+spec:
+  containers:
+    - name: eap-frontend
+      image: <<REPOSITORY>>/eap_frontend
+      env:
+        VUE_APP_API_URL: /api
+    - name: eap-backend
+      image: <<REPOSITORY>>/eap_backend
+      env:
+        SNOWFLAKE_WAREHOUSE: <<WAREHOUSE>>
+    - name: eap-router
+      image: <<REPOSITORY>>/eap_router
+      env:
+        FE_SERVER: localhost:8080
+        BE_SERVER: localhost:8081
+  endpoints:
+    - name: app
+      port: 8000
+      public: true
