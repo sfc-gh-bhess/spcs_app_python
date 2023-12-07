@@ -139,12 +139,7 @@ export default {
   methods: {
     get_data() {
       const baseUrl = process.env.VUE_APP_API_URL
-      /*
-          sdt_str = request.args.get('start_range') or '1995-01-01'
-          edt_str = request.args.get('end_range') or '1995-03-31'
-          topn_str = request.args.get('topn') or '10'
-      */
-      axios.get(baseUrl + "/connector/top_clerks", 
+      axios.get(baseUrl + "/top_clerks", 
                 {params: {start_range: this.begin, end_range: this.end, topn: this.topn}})
         .then(r => {
           this.clerk_data = r.data

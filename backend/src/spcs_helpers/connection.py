@@ -2,48 +2,28 @@ import os
 import snowflake.connector
 from snowflake.snowpark import Session
 
-def get_params():
-    config = {}
-    config['host'] = os.getenv('SNOWFLAKE_HOST')
-    config['port'] = os.getenv('SNOWFLAKE_PORT')
-    config['protocol'] = 'https'
-    config['account'] = os.getenv('SNOWFLAKE_ACCOUNT')
-    config['database'] = os.getenv('SNOWFLAKE_DATABASE')
-    config['schema'] = os.getenv('SNOWFLAKE_SCHEMA')
-
-    config['warehouse'] = os.getenv('SNOWFLAKE_WAREHOUSE')
-    config['user'] = os.getenv('SNOWFLAKE_USER')
-    config['password'] = os.getenv('SNOWFLAKE_PASSWORD')
-    return config
-
-def get_token():
-    with open('/snowflake/session/token', 'r') as f:
-        return f.read()
-
 def connection() -> snowflake.connector.SnowflakeConnection:
-    args = get_params()
-    if args['user']:
+    if os.path.isfile("/snowflake/session/token"):
         creds = {
-            'account': args['account'],
-            'user': args['user'],
-            'password': args['password'],
+            'host': os.getenv('SNOWFLAKE_HOST'),
+            'port': os.getenv('SNOWFLAKE_PORT'),
+            'protocol': "https",
+            'account': os.getenv('SNOWFLAKE_ACCOUNT'),
+            'authenticator': "oauth",
+            'token': open('/snowflake/session/token', 'r').read(),
             'warehouse': args['warehouse'],
-            'database': args['database'],
-            'schema': args['schema'],
+            'database': os.getenv('SNOWFLAKE_DATABASE'),
+            'schema': os.getenv('SNOWFLAKE_SCHEMA'),
             'client_session_keep_alive': True
         }
     else:
-        token = get_token()
         creds = {
-            'host': args['host'],
-            'port': args['port'],
-            'protocol': args['protocol'],
-            'account': args['account'],
-            'authenticator': "oauth",
-            'token': token,
-            'warehouse': args['warehouse'],
-            'database': args['database'],
-            'schema': args['schema'],
+            'account': os.getenv('SNOWFLAKE_ACCOUNT'),
+            'user': os.getenv('SNOWFLAKE_USER'),
+            'password': os.getenv('SNOWFLAKE_PASSWORD'),
+            'warehouse': os.getenv('SNOWFLAKE_WAREHOUSE'),
+            'database': os.getenv('SNOWFLAKE_DATABASE'),
+            'schema': os.getenv('SNOWFLAKE_SCHEMA'),
             'client_session_keep_alive': True
         }
 
