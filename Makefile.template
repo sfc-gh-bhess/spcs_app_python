@@ -13,7 +13,7 @@ run: ## Run local Docker images - make sure to set environment variables properl
 	docker compose up
 
 
-all: login build push_docker
+all: login build push
 
 login:  ## Login to Snowflake Docker repo
 	docker login $(REPO)

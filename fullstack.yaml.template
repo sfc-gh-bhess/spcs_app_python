@@ -3,7 +3,7 @@ spec:
     - name: eap-frontend
       image: <<REPOSITORY>>/eap_frontend
       env:
-        VUE_APP_API_URL: /api
+        VUE_APP_API_URL: /api/snowpark
     - name: eap-backend
       image: <<REPOSITORY>>/eap_backend
       env:

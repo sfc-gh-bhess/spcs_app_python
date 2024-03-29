@@ -1,10 +1,8 @@
 from flask import Flask, jsonify, make_response
 import os
-from connector import connector
 from snowpark import snowpark
 
 app = Flask(__name__)
-app.register_blueprint(connector, url_prefix='/connector')
 app.register_blueprint(snowpark, url_prefix='/snowpark')
 
 @app.route("/")

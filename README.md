@@ -37,22 +37,38 @@ enabled.
 5. Upload the `fullstack.yaml` to the stage you created in step 1. 
    If you followed those steps, the stage should be `@TUTORIAL_DB.DATA_SCHEMA.TUTORIAL_STAGE`. 
    You can use SnowSQL, Snowsight, or any other method to `PUT` the file to the Stage.
-6. Create the service by executing
+6. The frontend includes loading the Snowflake logo from Wikipedia, 
+   just to illustrate loading something into the webpage from an external
+   source. In order to support this, we need to create an EXTERNAL
+   ACCESS INTEGRATION:
+   ```
+   CREATE OR REPLACE NETWORK RULE nr_wiki
+      MODE = EGRESS
+      TYPE = HOST_PORT
+      VALUE_LIST = ('upload.wikimedia.org');
+
+   CREATE OR REPLACE EXTERNAL ACCESS INTEGRATION eai_wiki
+      ALLOWED_NETWORK_RULES = ( nr_wiki )
+      ENABLED = true;
+   ```
+7. Create the service by executing
    ```
    CREATE SERVICE fullstack
      IN COMPUTE POOL tutorial_compute_pool
      FROM @tutorial_db.data_schema.tutorial_stage
-     SPEC = 'fullstack.yaml';
+     SPEC = 'fullstack.yaml'
+     EXTERNAL_ACCESS_INTEGRATIONS = ( EAI_WIKI )
+     ;
    ```
-7. See that the service has started by executing `SHOW SERVICES IN COMPUTE POOL tutorial_compute_pool` 
+8. See that the service has started by executing `SHOW SERVICES IN COMPUTE POOL tutorial_compute_pool` 
    and `SELECT system$get_service_status('fullstack')`.
-8. Find the public endpoint for the service by executing `SHOW ENDPOINTS IN SERVICE fullstack`.
-9. Grant permissions for folks to visit the Streamlit. You do this by granting 
+9. Find the public endpoint for the service by executing `SHOW ENDPOINTS IN SERVICE fullstack`.
+10. Grant permissions for folks to visit the Streamlit. You do this by granting 
    `USAGE` on the service: `GRANT USAGE ON SERVICE fullstack TO ROLE some_role`, 
    where you specify the role in place of `some_role`.
-10. Navigate to the endpoint and authenticate. Note, you must use a user whose
+11. Navigate to the endpoint and authenticate. Note, you must use a user whose
    default role is _not_ `ACCOUNTADMIN`, `SECURITYADMIN`, or `ORGADMIN`.
-11. Enjoy!
+12. Enjoy!
 
 
 ## Local Testing
