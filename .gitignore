@@ -2,4 +2,5 @@ __pycache__
 package_modules
 node_modules
 Makefile
-fullstack.yaml
+backend.yaml
+frontend.yaml
