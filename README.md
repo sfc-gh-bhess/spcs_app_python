@@ -48,7 +48,7 @@ enabled.
    You can use SnowSQL, Snowsight, or any other method to `PUT` the file to the Stage.
 6. We are going to create 2 compute pools, one for the frontend and one for the 
    backend.
-   ```
+   ```sql
    USE ROLE ACCOUNTADMIN;
 
    CREATE COMPUTE POOL frontend_compute_pool
@@ -67,7 +67,7 @@ enabled.
    just to illustrate loading something into the webpage from an external
    source. In order to support this, we need to create an EXTERNAL
    ACCESS INTEGRATION:
-   ```
+   ```sql
    USE ROLE ACCOUNTADMIN;
 
    CREATE OR REPLACE NETWORK RULE nr_wiki
@@ -80,7 +80,7 @@ enabled.
       ENABLED = true;
    ```
 7. Create the backend service by executing
-   ```
+   ```sql
    CREATE SERVICE backend
      IN COMPUTE POOL backend_compute_pool
      FROM @tutorial_db.data_schema.tutorial_stage
@@ -88,7 +88,7 @@ enabled.
      ;
    ```
 8. Create the frontend service by executing
-   ```
+   ```sql
    CREATE SERVICE frontend
      IN COMPUTE POOL frontend_compute_pool
      FROM @tutorial_db.data_schema.tutorial_stage
@@ -101,7 +101,7 @@ enabled.
    or `SELECT system$get_service_status('frontend')`.
 10. Find the public endpoint for the frontend service by executing `SHOW ENDPOINTS IN SERVICE frontend`.
 11. Grant permissions for folks to visit the Streamlit. You do this by granting 
-   `USAGE` on the service: `GRANT USAGE ON SERVICE frontend TO ROLE some_role`, 
+   the SERVICE ROLE: `GRANT SERVICE ROLE frontend!app TO ROLE some_role`, 
    where you specify the role in place of `some_role`.
 12. Navigate to the endpoint and authenticate. Note, you must use a user whose
    default role is _not_ `ACCOUNTADMIN`, `SECURITYADMIN`, or `ORGADMIN`.
