@@ -2,8 +2,6 @@ spec:
   containers:
     - name: eap-backend
       image: <<REPOSITORY>>/eap_backend
-      env:
-        SNOWFLAKE_WAREHOUSE: <<WAREHOUSE>>
   endpoints:
     - name: eap-backend
       port: 8081

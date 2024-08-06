@@ -4,7 +4,7 @@ services:
     eap_router:
         build: ./router
         ports:
-          - 8888:8000
+          - 80:80
         environment:
           - FE_SERVER=eap_frontend:8080
           - BE_SERVER=eap_backend:8081

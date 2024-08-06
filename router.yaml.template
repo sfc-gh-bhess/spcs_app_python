@@ -1,0 +1,20 @@
+spec:
+  containers:
+    - name: router
+      image: <<REPOSITORY>>/eap_router
+      # Enter your endpoints here
+      # The format is: /eproute=http://svcname:port
+      #   where svcname is the name of the SERVICE, port
+      #   is the port number for that SERVICE, and eproute
+      #   is the route you want to create for that destination.
+      args:
+        - /=http://frontend:8080/
+        - /api=http://backend:8081/
+  endpoints:
+    - name: router
+      port: 80
+      public: true
+serviceRoles:
+- name: app
+  endpoints:
+  - router
