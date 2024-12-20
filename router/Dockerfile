@@ -2,8 +2,12 @@ FROM nginx:alpine
  
 RUN apk update && apk add bash
 
-EXPOSE 8000
+EXPOSE 80
 
-COPY nginx.conf /nginx.conf
+WORKDIR /app
 
-CMD ["/bin/sh" , "-c" , "envsubst '$FE_SERVER $BE_SERVER' < /nginx.conf > /etc/nginx/nginx.conf && exec nginx -g 'daemon off;'"]
+COPY src/. .
+
+RUN chmod +x ./entrypoint.sh
+
+ENTRYPOINT [ "./entrypoint.sh" ]

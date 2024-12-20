@@ -4,19 +4,19 @@ services:
     eap_router:
         build: ./router
         ports:
-          - 8888:8000
-        environment:
-          - FE_SERVER=eap_frontend:8080
-          - BE_SERVER=eap_backend:8081
+          - 80:80
+        command:
+          - /=http://frontend:8080/
+          - /api=http://backend:8081/
 
-    eap_frontend:
+    frontend:
         build: ./frontend
         ports:
             - 8080:8080
         environment:
             - VUE_APP_API_URL=/api/snowpark
   
-    eap_backend:
+    backend:
         build: ./backend
         ports:
             - 8081:8081
